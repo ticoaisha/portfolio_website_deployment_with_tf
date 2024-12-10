@@ -124,7 +124,7 @@ After this in the root of the project folder, create a new file called `next.co
 
 ![](images/6_next_config_js.png)
 
-Run the following command: `npm run build`, which would generate an `out` folder:
+Run the following command: `npm run build` to create a build of our application to be able to deploy our satic application to `s3`, which would generate an `out` folder, which will be used to deploy our app on Amazon `s3`.
 
 ![](images/7_run_build.png)
 
