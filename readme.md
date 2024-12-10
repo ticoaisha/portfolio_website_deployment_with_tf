@@ -83,3 +83,50 @@ Next.js is versatile and can be used for a variety of web applications. Some com
 **Summary**
 
 Next.js is a powerful framework that extends React's capabilities, making it easier to build fast, scalable, and SEO-friendly web applications. Whether you're creating a static site, a dynamic web app, or an e-commerce platform, Next.js provides the tools and features you need to deliver a great user experience.
+
+Steps:
+
+1. Create a new GitHub repo 
+
+2. Clone the Portfolio Starter Kit:
+
+`npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/main/basics/learn-starter"`
+
+![](images/2_clone_portfolio_starter_kit.png)
+
+![](images/3_portfolio_kit_cloned.png)
+
+3. Navigate to the Project Directory:
+
+`cd nextjs-blog`
+
+`npm run dev`
+
+![](images/4_new_node_v_needed.png)
+
+If you, like me, encountered this message, then you will need to update `node` version. I used `homebrew` for this. 
+
+Try tun the following first: `brew upgrade node`. If this will not work, try run the following commands to uninstall the existing Node.js version (if needed):
+
+```
+sudo rm -rf /usr/local/lib/node_modules
+sudo rm -rf /usr/local/bin/node
+sudo rm -rf /usr/local/bin/npm
+```
+
+Then run the following: `brew install node` and `node -v` to check that now you are using the correct `node` version.
+
+This should start your next.js app on `http://localhost:3000/`
+
+![](images/5_node_app_localhost.png)
+
+After this in the root of the project folder, create a new file called `next.config.js` and paste the following code inside this file:
+
+![](images/6_next_config_js.png)
+
+Run the following command: `npm run build`, which would generate an `out` folder:
+
+![](images/7_run_build.png)
+
+![](images/8_out_folder_generated.png)
+
