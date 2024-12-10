@@ -120,13 +120,42 @@ This should start your next.js app on `http://localhost:3000/`
 
 ![](images/5_node_app_localhost.png)
 
-After this in the root of the project folder, create a new file called `next.config.js` and paste the following code inside this file:
+4. After this in the root of the project folder, create a new file called `next.config.js` and paste the following code inside this file:
 
 ![](images/6_next_config_js.png)
 
-Run the following command: `npm run build` to create a build of our application to be able to deploy our satic application to `s3`, which would generate an `out` folder, which will be used to deploy our app on Amazon `s3`.
+5. Run the following command: `npm run build` to create a build of our application to be able to deploy our satic application to `s3`, which would generate an `out` folder, which will be used to deploy our app on Amazon `s3`.
 
 ![](images/7_run_build.png)
 
 ![](images/8_out_folder_generated.png)
+
+6. Set up Terraform Directory, that should me inside the nextjs blog folder:
+
+![](images/9_create_tf_dir.png)
+
+![](images/10_tf_dir.png)
+
+7. Set up `state.tf` file, where we will set up out terraform state with s3 and DynamoDB:
+
+![](images/11_state_tf.png)
+
+8. Create `main.tf` file, where we will put all the s3 configuration inside:
+
+![](images/12_main_tf.png)
+
+We will set up s3 configuration and also s3 ownership controls to ensure, that we, as s3 bucket owners, have complete control of the objects in the bucket. This will be true even the objects will be uploaded by different aws account
+
+We will also set up public access to the s3 bucket. When the s3 bucket is set up, by default it blocks all the public access to it. Setting up these parameters to `false` allows bucket and objects inside it to be publicly accessible.
+
+![](images/13_bucket_objects_public_access.png)
+
+No we need to set bucket ACL to public read so the objects in the bucket will be publicly accessible. 
+`depends_on` ensures that ownership control and public access block settings are applied before setting the ACL.
+
+Now we need to attach a bucket policy to allow a public read acces to the objects in s3. Bucket policy defines detailed access permissions for the bucket and its objects using IAM policies
+
+
+
+These all are refined layers of control for s3 bucket: for fine-grained control, security best practices, compliance, flexibility
 
