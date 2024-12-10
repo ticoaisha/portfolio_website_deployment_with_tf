@@ -37,7 +37,6 @@ resource "aws_s3_bucket_acl" "nextjs_bucket_acl" {
 }
 
 # Bucket policy
-
 resource "aws_s3_bucket_policy" "nextjs_bucket_policy" {
   bucket = aws_s3_bucket.nextjs_bucket.id
 

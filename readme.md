@@ -144,18 +144,22 @@ This should start your next.js app on `http://localhost:3000/`
 
 ![](images/12_main_tf.png)
 
-We will set up s3 configuration and also s3 ownership controls to ensure, that we, as s3 bucket owners, have complete control of the objects in the bucket. This will be true even the objects will be uploaded by different aws account
+We will set up s3 configuration and also s3 ownership controls to ensure, that we, as s3 bucket owners, have complete control of the objects in the bucket. This will be true even the objects will be uploaded by different aws account.
+
+![](images/13_s3_ownership_control.png)
 
 We will also set up public access to the s3 bucket. When the s3 bucket is set up, by default it blocks all the public access to it. Setting up these parameters to `false` allows bucket and objects inside it to be publicly accessible.
 
-![](images/13_bucket_objects_public_access.png)
+![](images/14_block_public_access.png)
 
 No we need to set bucket ACL to public read so the objects in the bucket will be publicly accessible. 
-`depends_on` ensures that ownership control and public access block settings are applied before setting the ACL.
+`depends_on` ensures that ownership control and public access block settings are applied before. setting the ACL.
 
-Now we need to attach a bucket policy to allow a public read acces to the objects in s3. Bucket policy defines detailed access permissions for the bucket and its objects using IAM policies
+![](images/15_bucket_acl.png)
 
+Now we need to attach a bucket policy to allow a public read acces to the objects in s3. Bucket policy defines detailed access permissions for the bucket and its objects using IAM policies.
 
+![](images/16_bucket_policy.png)
 
-These all are refined layers of control for s3 bucket: for fine-grained control, security best practices, compliance, flexibility
+These all are refined layers of control for s3 bucket: for fine-grained control, security best practices, compliance, flexibility.
 
