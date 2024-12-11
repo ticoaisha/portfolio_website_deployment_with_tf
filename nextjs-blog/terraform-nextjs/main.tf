@@ -40,7 +40,7 @@ resource "aws_s3_bucket_acl" "nextjs_bucket_acl" {
 resource "aws_s3_bucket_policy" "nextjs_bucket_policy" {
   bucket = aws_s3_bucket.nextjs_bucket.id
 
-  policy = jsonencode ({
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
         {
@@ -68,7 +68,7 @@ resource "aws_cloudfront_distribution" "nextjs_distribution" {
     origin_id = "S3-nextjs-portfolio-bucket"
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
     }
   }
 

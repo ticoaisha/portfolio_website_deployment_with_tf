@@ -205,3 +205,38 @@ Now we need to update `state.tf` file for two new properties that we have just c
 
 ![](images/20_update_state_tf.png)
 
+Open the write directory in the terminal:
+
+![](images/21_right_dir_terminal.png)
+
+Run `terraform init` to initialize the backend:
+
+![](images/22_tf_init.png)
+
+Run `terraform plan` to see the plan of the resources that we are configuring:
+
+![](images/23_tf_plan.png)
+
+Run terraform apply and answer `yes` to the promt to ensure the infrastructure changes.
+
+![](images/24_tf_apply.png)
+
+![](images/25_tf_apply_yes.png)
+
+Let's run `terraform show` to see CloudFront distribution URL:
+
+![](images/26_tf_show.png)
+
+Now we will deploy `out` folder into the s3 bucket. Go to the right directory and run the following command: `aws s3 sync ./out s3://nextjs-portfolio-bucket-aace`, where the name of the s3 bucket is from `main.tf` file. 
+
+![](images/27_right_folder_for_s3_sync.png)
+
+![](images/28_s3_sync.png)
+
+Now we need to paste the domain name url to the browser and veify that we can see the next.js application:
+
+![](images/29_next_js_app_browser.png)
+
+Let's not forget to destroy the infrastructure:
+
+![](images/30_tf_destroy.png)
