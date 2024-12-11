@@ -29,7 +29,7 @@ resource "aws_s3_bucket_public_access_block" "nextjs_bucket_public_access_block"
 # Bucket ACL
 resource "aws_s3_bucket_acl" "nextjs_bucket_acl" {
   depends_on = [ 
-    aws_s3_bucket_ownership_controls.nextjs,
+    aws_s3_bucket_ownership_controls.nextjs_bucket_ownership_controls,
     aws_s3_bucket_public_access_block.nextjs_bucket_public_access_block 
     ]
     bucket = aws_s3_bucket.nextjs_bucket.id
@@ -40,8 +40,8 @@ resource "aws_s3_bucket_acl" "nextjs_bucket_acl" {
 resource "aws_s3_bucket_policy" "nextjs_bucket_policy" {
   bucket = aws_s3_bucket.nextjs_bucket.id
 
-  policy = jsondecode(({
-    version = "2012-10-17"
+  policy = jsonencode ({
+    Version = "2012-10-17"
     Statement = [
         {
             Sid = "PublicReadGetObject"
@@ -52,7 +52,7 @@ resource "aws_s3_bucket_policy" "nextjs_bucket_policy" {
 
         }
         ]
-    }))
+    })
 }
 
 # Origin Access Identity
@@ -97,15 +97,12 @@ resource "aws_cloudfront_distribution" "nextjs_distribution" {
 
   restrictions {
     geo_restriction {
-      restriction_type = none
+      restriction_type = "none"
     }
   }
 
 
   viewer_certificate {
     cloudfront_default_certificate = true
-  }
-
-  
-  
+  }  
 }

@@ -140,6 +140,8 @@ This should start your next.js app on `http://localhost:3000/`
 
 ![](images/11_state_tf.png)
 
+![](images/11_1_state_tf_created.png)
+
 8. Create `main.tf` file, where we will put all the s3 configuration inside:
 
 ![](images/12_main_tf.png)
@@ -186,3 +188,20 @@ We also need to enable a few caching behaviors, that will define how CloudFront 
 `restrictions` resource is needed to configure the geographic restrictions for the CloudFront distribution. This determines, from which location the users can access our content; `none` in our case will indicate that we want everyone to have access to our website (could be `whitelist` means access only from specified countries, `blacklist` means denial of access from specified countries).
 
 `viewer_certificate` configure ssl and tsl settings for our CloudFront distribution, which ensures secure communication between our users and CloudFront. `cloudfront_default_certificate` set to `true` tells the CloudFront to use its default ssl and tsl certificate. Default certificate supports ssl and tsl termination, as well as https connections, using a shared certificate for our `cloudfront.net` domain. We will get a standard CloudFront URL, and it will be secured by default, beacuse we are using default CloudFront certificate. Using the certificate ensures that the data transmitted between the end user and CloudFront is encrypted and secure.
+
+Let's create our s3 bucket by running: `aws s3api create-bucket --bucket aace-my-tf-website-state --region us-east-1`:
+
+![](images/17_create_s3_bucket.png)
+
+![](images/18_s3_bucket_created.png)
+
+Let's create a DynamoDB table by running: `aws dynamodb create-table --table-name my-db-website-table --attribute-definitions Attr
+ibuteName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=
+2,WriteCapacityUnits=2`
+
+![](images/19_create_dynamodb_tbl.png)
+
+Now we need to update `state.tf` file for two new properties that we have just created.
+
+![](images/20_update_state_tf.png)
+
