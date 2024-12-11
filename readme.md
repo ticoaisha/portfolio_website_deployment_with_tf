@@ -163,3 +163,26 @@ Now we need to attach a bucket policy to allow a public read acces to the object
 
 These all are refined layers of control for s3 bucket: for fine-grained control, security best practices, compliance, flexibility.
 
+9. Now we need to set up CloudFront service to serve static website from Amazon s3. CloudFront will use 3s bucket as its origin and provide CDN (Content Delivery Neywork) for faster access and better performance. 
+
+First define origin access identity (OAI), which is special CloudFront user, that gives CloudFront access to the s3 bucket, so the applicaiton in the bucket can be served by CloudFront. By setting OAI, we will ensure that only CloudFront can directly access s3 bucket, which is also can be considered as extra layer of security.
+
+`origin` block specifies origins settings for our CloudFront distribution. Domain name of the origin is the s3 bucket, that tells CloudFront, where to fetch the content from. `origin_id` helps to uniquely identify this origin within the CloudFront distribution. `s3_origin_config` block sets up the settings, specific to the s3 as the origin. CloudFront will use that OAI to access that s3 bucket. This configuration ensures that noone, except CloudFront, will be able to access s3 bucket. 
+
+Benefits of using CloudFront. It has global content distribution. It caches content at edge locations around the world, which ensures fast delivery to users regardless of their geographic location. It gives the improved perfomance by serving the content from the nearest edge location. CloudFront reduces the latency and speeds up the load time of the static website. CloudFront also provides enhanced security, as OAI restricts direct access to the s3 bucket, ensuring that content can be access only through CloudFront. Also it provides scalabiliy, because CloudFront automatically scales to handle the traffic load, providing reliable and scalable solution to serve the applicaion. 
+
+We need to set up additional configuration for CloudFront to make sure that content delivery through CloudFront is optimized. 
+
+`enabled = true` means that CloudFront distribution is active and will serve the content as soon as it is deployed. `false` setting will mean that distribution will be created, but won't be enabled. `is_ipv6_enabled = true` will set up `ipv6` support for the CloudFront. `default_root_object`: when the request is made to the root url of our distribution, CloudFront will serve `index.html` from the origin, which is s3 bucket. 
+
+We also need to enable a few caching behaviors, that will define how CloudFront should handle the requests to our origin.
+
+`allowed_methods` specify http methods allowed for the caching behaviour. `cached_methods` specify http methods to actually cache. By caching `get` and `head` requests, we are making sure that these common retrieval requests are served quickly from the cache. `target_origin_id` links cached behavior to the specified origin. This ensures that the requests, matching this behavior, are directed to the s3 bucket.  
+
+`query_string` indicates, whether to forward the query string to the origin: `false` means that they are not forwarded, which simplifies caching and improves performance. `cookies` specifies, how cookies forwarded to the s3 bucket: `none` means that cookies are not forwarded and this can ensure caching efficiency and reduce complexity. 
+
+`viewer_protocol_policy` ensures that viewers are redirected to the https. This policy improves security by ensuring that all communications between the client and the CloudFront CDN are secured and encrypted. `min_ttl` is the minimum amount of time the object is cached: `0` sets to the immediate update if needed; `default_ttl` is the default amount of time the object is cached; `max_ttl` is the maximun amount of time the object is cached: in our case we are making cure that the content is refreshed at least ones a day (86400 s = 24 hrs).
+
+`restrictions` resource is needed to configure the geographic restrictions for the CloudFront distribution. This determines, from which location the users can access our content; `none` in our case will indicate that we want everyone to have access to our website (could be `whitelist` means access only from specified countries, `blacklist` means denial of access from specified countries).
+
+`viewer_certificate` configure ssl and tsl settings for our CloudFront distribution, which ensures secure communication between our users and CloudFront. `cloudfront_default_certificate` set to `true` tells the CloudFront to use its default ssl and tsl certificate. Default certificate supports ssl and tsl termination, as well as https connections, using a shared certificate for our `cloudfront.net` domain. We will get a standard CloudFront URL, and it will be secured by default, beacuse we are using default CloudFront certificate. Using the certificate ensures that the data transmitted between the end user and CloudFront is encrypted and secure.
